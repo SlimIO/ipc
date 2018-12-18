@@ -26,6 +26,7 @@
     "homepage": "https://github.com/SlimIO/ipc#readme",
     "dependencies": {
         "@slimio/is": "^1.4.0",
+        "@slimio/safe-emitter": "^1.0.3",
         "uuid": "^3.3.2"
     },
     "devDependencies": {
@@ -47,7 +48,6 @@
     },
     "husky": {
         "hooks": {
-            "pre-push": "cross-env npm test && eslint src/**",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },

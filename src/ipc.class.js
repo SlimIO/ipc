@@ -1,16 +1,19 @@
 // Require Third-party Dependencies
-const is = require("@slimio/is");
 const uuid = require("uuid");
+const SafeEmitter = require("@slimio/safe-emitter");
 
 // SYMBOLS
 const IPC_TYPE = Symbol("TYPE");
+
+// CONSTANTS
+const MESSAGE_TIMEOUT_MS = 1000;
 
 /**
  * @class IPC
  *
  * @property {Boolean} isMaster
  */
-class IPC {
+class IPC extends SafeEmitter {
     /**
      * @constructor
      * @memberof IPC#
@@ -20,15 +23,14 @@ class IPC {
      * @throws {TypeError}
      */
     constructor(cp) {
+        super();
         const cpNotDefined = typeof cp === "undefined";
         if (cpNotDefined) {
             if (typeof process.send === "undefined") {
                 throw new Error("Unable to declare slave IPC on master process!");
             }
 
-            process.on("message", (msg) => {
-                console.log(msg);
-            });
+            process.on("message", this._messageHandler.bind(this));
         }
         else {
             if (cp.constructor.name !== "ChildProcess") {
@@ -36,17 +38,11 @@ class IPC {
             }
 
             this.cp = cp;
-            this.cp.on("message", (msg) => {
-                console.log(msg);
-            });
+            this.cp.on("message", this._messageHandler.bind(this));
         }
 
-        Reflect.defineProperty(this, IPC_TYPE, {
-            value: cpNotDefined ? IPC.Types.Slave : IPC.Types.Master,
-            enumerable: false,
-            writable: false,
-            configurable: false
-        });
+        this.response = new SafeEmitter();
+        this[IPC_TYPE] = cpNotDefined ? IPC.Types.Slave : IPC.Types.Master;
     }
 
     /**
@@ -58,25 +54,66 @@ class IPC {
     }
 
     /**
-     * @method send
+     * @private
+     * @method _messageHandler
      * @memberof IPC#
-     * @param {*} message message
-     * @returns {Promise<void>}
+     * @param {*} data data
+     * @returns {void}
      */
-    async send(message) {
-        const msgStr = is.string(message) ? message : JSON.stringify(message);
-        const id = uuid();
-        const msg = {
-            headers: { id },
-            payload: msgStr
-        };
-
-        if (this.isMaster) {
-            this.cp.send(JSON.stringify(msg));
+    _messageHandler(data) {
+        const { headers: { subject = null, id } } = data;
+        if (subject === null) {
+            this.response.emit(id, data.message);
         }
         else {
-            process.send(JSON.stringify(msg));
+            this.emit(subject, data.message, (message) => {
+                this.nativeSend({ headers: { id }, message });
+            });
         }
+    }
+
+    /**
+     * @method nativeSend
+     * @memberof IPC#
+     * @param {T} data payload to send
+     * @return {void}
+     *
+     * @template T
+     */
+    nativeSend(data) {
+        if (this.isMaster) {
+            this.cp.send(data);
+        }
+        else {
+            process.send(data);
+        }
+    }
+
+    /**
+     * @method send
+     * @memberof IPC#
+     * @param {!String} subject subject name
+     * @param {*} message message
+     * @returns {Promise<T>}
+     *
+     * @template T
+     * @throws {TypeError}
+     */
+    async send(subject, message) {
+        if (typeof subject !== "string") {
+            throw new TypeError("subject must be a string");
+        }
+
+        // Send message at the next event-loop iteration!
+        const data = {
+            headers: { subject, id: uuid() }, message
+        };
+        setImmediate(() => this.nativeSend(data));
+
+        // Wait for response
+        const [result] = await this.response.once(data.headers.id, MESSAGE_TIMEOUT_MS);
+
+        return result;
     }
 }
 
