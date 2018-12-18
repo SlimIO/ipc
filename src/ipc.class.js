@@ -1,12 +1,18 @@
+// Require Node.js Dependencies
+const { randomBytes } = require("crypto");
+
 // Require Third-party Dependencies
-const uuid = require("uuid");
 const SafeEmitter = require("@slimio/safe-emitter");
+
+// Require Internal Dependencies
+const Message = require("./message.class");
 
 // SYMBOLS
 const IPC_TYPE = Symbol("TYPE");
 
 // CONSTANTS
 const MESSAGE_TIMEOUT_MS = 1000;
+const ID_LENGTH = 16;
 
 /**
  * @class IPC
@@ -24,13 +30,15 @@ class IPC extends SafeEmitter {
      */
     constructor(cp) {
         super();
-        const cpNotDefined = typeof cp === "undefined";
-        if (cpNotDefined) {
+        this.response = new SafeEmitter();
+
+        if (typeof cp === "undefined") {
             if (typeof process.send === "undefined") {
                 throw new Error("Unable to declare slave IPC on master process!");
             }
 
             process.on("message", this._messageHandler.bind(this));
+            this[IPC_TYPE] = IPC.Types.Slave;
         }
         else {
             if (cp.constructor.name !== "ChildProcess") {
@@ -39,10 +47,8 @@ class IPC extends SafeEmitter {
 
             this.cp = cp;
             this.cp.on("message", this._messageHandler.bind(this));
+            this[IPC_TYPE] = IPC.Types.Master;
         }
-
-        this.response = new SafeEmitter();
-        this[IPC_TYPE] = cpNotDefined ? IPC.Types.Slave : IPC.Types.Master;
     }
 
     /**
@@ -105,18 +111,20 @@ class IPC extends SafeEmitter {
         }
 
         // Send message at the next event-loop iteration!
+        const id = randomBytes(ID_LENGTH).toString("hex");
         const data = {
-            headers: { subject, id: uuid() }, message
+            headers: { subject, id }, message
         };
         setImmediate(() => this.nativeSend(data));
 
         // Wait for response
-        const [result] = await this.response.once(data.headers.id, MESSAGE_TIMEOUT_MS);
+        const [result] = await this.response.once(id, MESSAGE_TIMEOUT_MS);
 
         return result;
     }
 }
 
+IPC.Message = Message;
 IPC.Types = Object.freeze({
     Master: 0,
     Slave: 1
