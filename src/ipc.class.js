@@ -5,7 +5,7 @@ const { randomBytes } = require("crypto");
 const SafeEmitter = require("@slimio/safe-emitter");
 
 // Require Internal Dependencies
-const Message = require("./message.class");
+const Stream = require("./stream.class");
 
 // SYMBOLS
 const IPC_TYPE = Symbol("TYPE");
@@ -67,7 +67,7 @@ class IPC extends SafeEmitter {
      * @returns {void}
      */
     _messageHandler(data) {
-        const { headers: { subject = null, id } } = data;
+        const { subject = null, id } = data.headers;
         if (subject === null) {
             this.response.emit(id, data.message);
         }
@@ -110,12 +110,19 @@ class IPC extends SafeEmitter {
             throw new TypeError("subject must be a string");
         }
 
-        // Send message at the next event-loop iteration!
         const id = randomBytes(ID_LENGTH).toString("hex");
-        const data = {
-            headers: { subject, id }, message
-        };
-        setImmediate(() => this.nativeSend(data));
+        if (message instanceof Stream) {
+            for await (const buf of message) {
+                this.nativeSend({ headers: { subject, id, complete: false }, message: buf });
+            }
+            this.nativeSend({ headers: { subject, id, complete: true }, message: null });
+        }
+        else {
+            const data = {
+                headers: { subject, id }, message
+            };
+            setImmediate(() => this.nativeSend(data));
+        }
 
         // Wait for response
         const [result] = await this.response.once(id, MESSAGE_TIMEOUT_MS);
@@ -124,7 +131,7 @@ class IPC extends SafeEmitter {
     }
 }
 
-IPC.Message = Message;
+IPC.Stream = Stream;
 IPC.Types = Object.freeze({
     Master: 0,
     Slave: 1
