@@ -12,10 +12,10 @@ setInterval(async() => {
     const wS = new IPC.Stream();
     setImmediate(() => {
         setTimeout(() => {
-            wS.write("hello world!");
+            wS.write("hello world!\n");
         }, 50);
         setTimeout(() => {
-            wS.write("foo bar!");
+            wS.write("foo bar!\n");
             wS.end();
         }, 100);
     });

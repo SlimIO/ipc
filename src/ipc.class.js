@@ -1,11 +1,11 @@
 // Require Node.js Dependencies
 const { randomBytes } = require("crypto");
-const { Readable } = require("stream");
 
 // Require Third-party Dependencies
 const SafeEmitter = require("@slimio/safe-emitter");
 
 // Require Internal Dependencies
+const MaybeStream = require("./maybe.class");
 const Stream = require("./stream.class");
 
 // SYMBOLS
@@ -183,6 +183,7 @@ class IPC extends SafeEmitter {
 }
 
 IPC.Stream = Stream;
+IPC.MaybeStream = MaybeStream;
 IPC.Types = Object.freeze({
     Master: 0,
     Slave: 1

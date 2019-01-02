@@ -5,6 +5,10 @@ import { Transform } from "stream";
 import * as SafeEmitter from "@slimio/safe-emitter";
 
 declare class Stream extends Transform {}
+declare class MaybeStream {
+    constructor(value: any);
+    getValue(options?: { decode?: boolean }): Promise<any>;
+}
 
 declare class IPC<T> extends SafeEmitter<T> {
     constructor(cp?: ChildProcess);
@@ -13,6 +17,7 @@ declare class IPC<T> extends SafeEmitter<T> {
     public response: SafeEmitter<any>;
     public static readonly Types: IPC.Types;
     public static Stream: typeof Stream;
+    public static MaybeStream: typeof MaybeStream;
 
     nativeSend(data?: any): void;
     send<K extends keyof T>(subject: K, data?: T[K]): Promise<any>;
