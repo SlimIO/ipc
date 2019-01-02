@@ -155,8 +155,13 @@ class IPC extends SafeEmitter {
             throw new TypeError("subject must be a string");
         }
 
+        let timeOutMS = MESSAGE_TIMEOUT_MS;
         const id = randomBytes(ID_LENGTH).toString("hex");
         if (message instanceof Stream) {
+            if (message.timeOut !== null) {
+                timeOutMS = message.timeOut;
+            }
+
             this.nativeSend({ headers: { subject, id, ws: true } });
             for await (const buf of message) {
                 this.nativeSend({ headers: { subject, id }, message: [...buf.values()] });
@@ -171,7 +176,7 @@ class IPC extends SafeEmitter {
         }
 
         // Wait for response
-        const [result] = await this.response.once(id, MESSAGE_TIMEOUT_MS);
+        const [result] = await this.response.once(id, timeOutMS);
 
         return result;
     }

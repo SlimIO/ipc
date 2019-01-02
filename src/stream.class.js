@@ -5,6 +5,14 @@ const { Transform } = require("stream");
  * @class Stream
  */
 class Stream extends Transform {
+    /**
+     * @constructor
+     */
+    constructor() {
+        super();
+        this.timeOut = null;
+    }
+
     // eslint-disable-next-line
     _read() {
         // do nothing
