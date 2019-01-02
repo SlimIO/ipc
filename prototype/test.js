@@ -11,7 +11,14 @@ const cp = fork("./child.js");
 /** @type {IPC<ChildCom>} */
 const master = new IPC(cp);
 
-master.on("wahou", (message, next) => {
-    console.log(message);
+master.on("wahou", async(message, next) => {
+    try {
+        for await (const buf of message) {
+            console.log(buf.toString());
+        }
+    }
+    catch (err) {
+        console.error(err);
+    }
     next("yop from master!");
 });

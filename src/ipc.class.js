@@ -1,5 +1,6 @@
 // Require Node.js Dependencies
 const { randomBytes } = require("crypto");
+const { Readable } = require("stream");
 
 // Require Third-party Dependencies
 const SafeEmitter = require("@slimio/safe-emitter");
@@ -30,7 +31,10 @@ class IPC extends SafeEmitter {
      */
     constructor(cp) {
         super();
+        this.catch((error) => console.error(error));
         this.response = new SafeEmitter();
+        /** @type {Map<String, IPC.Stream>} */
+        this.mem = new Map();
 
         if (typeof cp === "undefined") {
             if (typeof process.send === "undefined") {
@@ -67,14 +71,55 @@ class IPC extends SafeEmitter {
      * @returns {void}
      */
     _messageHandler(data) {
-        const { subject = null, id } = data.headers;
+        const { subject = null, id, ws = null } = data.headers;
+
+        if (ws !== null) {
+            if (ws) {
+                const wS = new IPC.Stream();
+                this.mem.set(id, wS);
+
+                if (subject === null) {
+                    this.response.emit(id, wS);
+                }
+                else {
+                    this.emit(subject, wS, async(message) => {
+                        if (message instanceof Stream) {
+                            this.nativeSend({ headers: { id, ws: true } });
+                            for await (const buf of message) {
+                                this.nativeSend({ headers: { id }, message: [...buf.values()] });
+                            }
+                            this.nativeSend({ headers: { id, ws: false } });
+
+                            return;
+                        }
+
+                        this.nativeSend({ headers: { id }, message });
+                    });
+                }
+            }
+            else {
+                const wS = this.mem.get(id);
+                wS.end();
+
+                this.mem.delete(id);
+            }
+
+            return;
+        }
+
+        // If id match a saved memory (write message to the stream)
+        if (this.mem.has(id)) {
+            const wS = this.mem.get(id);
+            wS.write(Buffer.from(data.message));
+
+            return;
+        }
+
         if (subject === null) {
             this.response.emit(id, data.message);
         }
         else {
-            this.emit(subject, data.message, (message) => {
-                this.nativeSend({ headers: { id }, message });
-            });
+            this.emit(subject, data.message, (message) => this.nativeSend({ headers: { id }, message }));
         }
     }
 
@@ -112,10 +157,11 @@ class IPC extends SafeEmitter {
 
         const id = randomBytes(ID_LENGTH).toString("hex");
         if (message instanceof Stream) {
+            this.nativeSend({ headers: { subject, id, ws: true } });
             for await (const buf of message) {
-                this.nativeSend({ headers: { subject, id, complete: false }, message: buf });
+                this.nativeSend({ headers: { subject, id }, message: [...buf.values()] });
             }
-            this.nativeSend({ headers: { subject, id, complete: true }, message: null });
+            this.nativeSend({ headers: { subject, id, ws: false } });
         }
         else {
             const data = {

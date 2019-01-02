@@ -10,12 +10,15 @@ const slave = new IPC();
 
 setInterval(async() => {
     const wS = new IPC.Stream();
-    slave.send("wahou", wS);
-    setTimeout(() => {
-        wS.write("hello world!");
-    }, 100);
-    setTimeout(() => {
-        wS.write("foo bar!");
-        wS.end();
-    }, 200);
+    setImmediate(() => {
+        setTimeout(() => {
+            wS.write("hello world!");
+        }, 50);
+        setTimeout(() => {
+            wS.write("foo bar!");
+            wS.end();
+        }, 100);
+    });
+    const masterMsg = await slave.send("wahou", wS);
+    console.log(masterMsg);
 }, 1000);
