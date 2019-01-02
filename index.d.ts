@@ -14,6 +14,7 @@ declare class IPC<T> extends SafeEmitter<T> {
     constructor(cp?: ChildProcess);
 
     public readonly isMaster: boolean;
+    public mem: Map<String, Stream>;
     public response: SafeEmitter<any>;
     public static readonly Types: IPC.Types;
     public static Stream: typeof Stream;

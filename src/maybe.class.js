@@ -1,6 +1,9 @@
 // Require Internal Dependencies
 const Stream = require("./stream.class");
 
+// Require Third-party Dependencies
+const is = require("@slimio/is");
+
 // Symbols
 const innerValue = Symbol("MaybeValue");
 
@@ -31,7 +34,7 @@ class MaybeStream {
      */
     async getValue({ decode = true } = Object.create(null)) {
         const value = this[innerValue];
-        if (value instanceof Stream) {
+        if (value instanceof Stream && is.asyncIterable(value)) {
             const bufArr = [];
             for await (const buf of value) {
                 bufArr.push(buf);
