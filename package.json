@@ -16,7 +16,10 @@
     },
     "keywords": [
         "SlimIO",
-        "monitoring"
+        "ipc",
+        "process",
+        "communication",
+        "wrapper"
     ],
     "author": "SlimIO",
     "license": "MIT",
