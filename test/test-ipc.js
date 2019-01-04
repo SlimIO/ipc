@@ -27,6 +27,13 @@ avaTest("Check static IPC properties", (assert) => {
     assert.is(IPC.Types.Slave, 1);
 });
 
+avaTest("IPC - CP must be an instanceof ChildProcess", (assert) => {
+    const err = assert.throws(() => {
+        new IPC(10);
+    }, Error);
+    assert.is(err.message, "cp must be instanceof ChildProcess");
+});
+
 avaTest("IPC Master - Properties and method tests", async(assert) => {
     const cp = fork(join(__dirname, "child.js"));
     const master = new IPC(cp);
