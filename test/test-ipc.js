@@ -50,9 +50,9 @@ avaTest("Create communication channel with child.js", async(assert) => {
     const ret = await master.send("prime", 5);
     assert.is(ret, 20);
 
-    // const wS = await master.send("sayHello", "fraxken");
-    // const value = await (new MaybeStream(wS)).getValue();
-    // assert.is(value, "hello fraxken!");
+    const wS = await master.send("sayHello", "fraxken");
+    const value = await (new MaybeStream(wS)).getValue();
+    assert.is(value, "hello fraxken !");
 
     cp.disconnect();
 });

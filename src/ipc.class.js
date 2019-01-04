@@ -67,10 +67,11 @@ class IPC extends SafeEmitter {
      * @private
      * @method _responseHandler
      * @memberof IPC#
+     * @param {*} id id
      * @param {*} message message
      * @returns {void}
      */
-    async _responseHandler(message) {
+    async _responseHandler(id, message) {
         if (message instanceof Stream) {
             this.nativeSend({ headers: { id, ws: true } });
             for await (const buf of message) {
@@ -104,7 +105,7 @@ class IPC extends SafeEmitter {
                 }
                 else {
                     this.emit(subject, wS, async(data) => {
-                        await this._responseHandler(data);
+                        await this._responseHandler(id, data);
                     });
                 }
             }
@@ -130,7 +131,9 @@ class IPC extends SafeEmitter {
             this.response.emit(id, data.message);
         }
         else {
-            this.emit(subject, data.message, (message) => this.nativeSend({ headers: { id }, message }));
+            this.emit(subject, data.message, async(data) => {
+                await this._responseHandler(id, data);
+            });
         }
     }
 
