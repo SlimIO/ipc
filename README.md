@@ -15,3 +15,40 @@ $ npm i @slimio/ipc
 # or
 $ yarn add @slimio/ipc
 ```
+
+## Usage example
+
+Create a `master.js` file with the following code:
+```js
+const IPC = require("@slimio/ipc");
+const { fork } = require("child_process");
+const { join } = require("join");
+const { strictEqual } = require("assert");
+
+const cp = fork(join(__dirname, "worker.js"));
+async function main() {
+    const master = new IPC(cp);
+
+    const ret = master.send("sayHello", "bob");
+    strictEqual(ret, "hello bob");
+}
+main().catch(console.error);
+
+cp.disconnect();
+```
+
+And now create a `worker.js` file at the same location with the following code:
+```js
+const IPC = require("@slimio/ipc");
+
+const slave = new IPC();
+
+slave.on("sayHello", (nickName, next) => {
+    next(`hello ${nickName}`);
+});
+```
+
+## API
+
+## Licence
+MIT
