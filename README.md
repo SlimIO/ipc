@@ -4,7 +4,11 @@
 ![V1.0](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![stability-unstable](https://img.shields.io/badge/stability-unstable-yellow.svg)
 
-Node.js Inter Process Communication
+Node.js Inter Process Communication. The goal of this package is to simplify interaction between two Node.js process.
+
+## Features
+- Send message with subjects (allow you to build comprehensive code).
+- Support streaming communication in both-end
 
 ## Getting Started
 
