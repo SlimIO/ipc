@@ -54,5 +54,15 @@ avaTest("Create communication channel with child.js", async(assert) => {
     const value = await (new MaybeStream(wS)).getValue();
     assert.is(value, "hello fraxken !");
 
+    const sumNum = new IPC.Stream();
+    setTimeout(() => sumNum.write("10"), 25);
+    setTimeout(() => sumNum.write("10"), 50);
+    setTimeout(() => {
+        sumNum.write("7");
+        sumNum.end();
+    }, 100);
+    const fNum = await master.send("addStream", sumNum);
+    assert.is(fNum, 27);
+
     cp.disconnect();
 });

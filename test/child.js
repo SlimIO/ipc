@@ -19,3 +19,12 @@ slave.on("sayHello", (name, next) => {
 
     next(wS);
 });
+
+slave.on("addStream", async(wS, next) => {
+    let sum = 0;
+    for await (const buf of wS) {
+        sum += Number(buf.toString());
+    }
+
+    next(sum);
+});
