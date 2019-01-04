@@ -49,6 +49,13 @@ slave.on("sayHello", (nickName, next) => {
 ```
 
 ## API
+You have to subscribe to the event-emitter to get incomming messages.
+
+### constructor(cp?: ChildProcess)
+Create a new IPC instance. Take a Node.js ChildProcess instance when the script is "**Master**". Creating an IPC as slave on a master script will throw an Error.
+
+### send(subject: String, data: any): Promise< any >
+Send a message to the master or slave (depending on the side).
 
 ## Licence
 MIT
