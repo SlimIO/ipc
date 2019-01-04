@@ -31,6 +31,7 @@ class IPC extends SafeEmitter {
      */
     constructor(cp) {
         super();
+        /* istanbul ignore next */
         this.catch((error) => console.error(error));
         this.response = new SafeEmitter();
         /** @type {Map<String, IPC.Stream>} */
