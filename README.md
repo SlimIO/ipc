@@ -4,7 +4,7 @@
 ![V1.0](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![stability-unstable](https://img.shields.io/badge/stability-unstable-yellow.svg)
 
-Node.js Inter Process Communication. The goal of this package is to simplify interaction between two Node.js process.
+Node.js end-to-end IPC (Inter Process Communication). The goal of this package is to simplify the code implementation to achieve interaction between two Node.js process.
 
 ## Features
 - Send message with subjects (allow you to build comprehensive code).
@@ -67,6 +67,16 @@ Create a new IPC instance. Take a Node.js ChildProcess instance when the script 
 
 ### send(subject: String, data: any): Promise< any >
 Send a message to the master or slave (depending on the side).
+
+### on(subject: string, subscriber: (payload: any, next) => void): void
+Subscribe to a given subject.
+
+```js
+ipc.on("subject", (payload, next) => {
+    console.log("received subject!");
+    next();
+});
+```
 
 ## Stream communication
 SlimIO IPC bring support for stream communication.
