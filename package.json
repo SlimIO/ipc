@@ -29,7 +29,7 @@
     "homepage": "https://github.com/SlimIO/ipc#readme",
     "dependencies": {
         "@slimio/is": "^1.4.0",
-        "@slimio/safe-emitter": "^1.0.5"
+        "@slimio/safe-emitter": "^1.0.6"
     },
     "devDependencies": {
         "@commitlint/cli": "^7.2.1",
