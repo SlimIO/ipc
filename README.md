@@ -24,22 +24,25 @@ $ yarn add @slimio/ipc
 
 Create a `master.js` file with the following code:
 ```js
-const IPC = require("@slimio/ipc");
+// Node.js Dependencies
 const { fork } = require("child_process");
 const { join } = require("join");
 const { strictEqual } = require("assert");
 
-const cp = fork(join(__dirname, "worker.js"));
+// Third-party Dependencies
+const IPC = require("@slimio/ipc");
+
 async function main() {
+    const cp = fork(join(__dirname, "worker.js"));
     const master = new IPC(cp);
     strictEqual(master.isMaster, true);
 
-    const ret = master.send("sayHello", "bob");
+    const ret = await master.send("sayHello", "bob");
     strictEqual(ret, "hello bob");
+
+    cp.disconnect();
 }
 main().catch(console.error);
-
-cp.disconnect();
 ```
 
 And now create a `worker.js` file at the same location with the following code:
@@ -51,6 +54,7 @@ const slave = new IPC();
 strictEqual(slave.isMaster, false);
 
 slave.on("sayHello", (nickName, next) => {
+    // use next() to send a response!
     next(`hello ${nickName}`);
 });
 ```
