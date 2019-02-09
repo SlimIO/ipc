@@ -32,6 +32,7 @@ const { strictEqual } = require("assert");
 const cp = fork(join(__dirname, "worker.js"));
 async function main() {
     const master = new IPC(cp);
+    strictEqual(master.isMaster, true);
 
     const ret = master.send("sayHello", "bob");
     strictEqual(ret, "hello bob");
@@ -43,9 +44,11 @@ cp.disconnect();
 
 And now create a `worker.js` file at the same location with the following code:
 ```js
+const { strictEqual } = require("assert");
 const IPC = require("@slimio/ipc");
 
 const slave = new IPC();
+strictEqual(slave.isMaster, false);
 
 slave.on("sayHello", (nickName, next) => {
     next(`hello ${nickName}`);
@@ -61,5 +64,10 @@ Create a new IPC instance. Take a Node.js ChildProcess instance when the script 
 ### send(subject: String, data: any): Promise< any >
 Send a message to the master or slave (depending on the side).
 
-## Licence
+## Stream communication
+SlimIO IPC bring support for stream communication.
+
+> TBC
+
+## License
 MIT
