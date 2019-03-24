@@ -1,6 +1,8 @@
+// Require Node.js Dependencies
+const { randomBytes } = require("crypto");
+
 // Require Third-party Dependencies
 const SafeEmitter = require("@slimio/safe-emitter");
-const hyperid = require("hyperid");
 
 // Require Internal Dependencies
 const MaybeStream = require("./maybe.class");
@@ -168,7 +170,7 @@ class IPC extends SafeEmitter {
         }
 
         let timeOutMS = MESSAGE_TIMEOUT_MS;
-        const id = `${hyperid()}`;
+        const id = randomBytes(16).toString();
         if (message instanceof Stream) {
             if (message.timeOut !== null) {
                 timeOutMS = message.timeOut;
