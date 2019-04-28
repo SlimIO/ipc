@@ -10,6 +10,9 @@ Node.js end-to-end IPC (Inter Process Communication). The goal of this package i
 - Send message with subjects (allow you to build comprehensive code).
 - Support streaming communication in both-end
 
+## Requirements
+- Node.js v10 or higher
+
 ## Getting Started
 
 This package is available in the Node Package Repository and can be easily installed with [npm](https://docs.npmjs.com/getting-started/what-is-npm) or [yarn](https://yarnpkg.com).
