@@ -16,8 +16,11 @@ const MESSAGE_TIMEOUT_MS = 1000;
 
 /**
  * @class IPC
+ * @extends SafeEmitter
  *
  * @property {Boolean} isMaster
+ * @property {Map<String, IPC.Stream>} mem
+ * @property {SafeEmitter} response
  */
 class IPC extends SafeEmitter {
     /**
@@ -57,6 +60,7 @@ class IPC extends SafeEmitter {
 
     /**
      * @property {Boolean} isMaster
+     * @desc Known if the current process is the master or the slave
      * @memberof IPC#
      */
     get isMaster() {
@@ -67,9 +71,9 @@ class IPC extends SafeEmitter {
      * @private
      * @method _responseHandler
      * @memberof IPC#
-     * @param {*} id id
-     * @param {*} message message
-     * @returns {void}
+     * @param {String} id id
+     * @param {String} message message
+     * @returns {Promise<void>}
      */
     async _responseHandler(id, message) {
         if (message instanceof Stream) {
@@ -89,7 +93,7 @@ class IPC extends SafeEmitter {
      * @private
      * @method _messageHandler
      * @memberof IPC#
-     * @param {*} data data
+     * @param {any} data data
      * @returns {void}
      */
     _messageHandler(data) {
@@ -140,10 +144,8 @@ class IPC extends SafeEmitter {
     /**
      * @method nativeSend
      * @memberof IPC#
-     * @param {T} data payload to send
+     * @param {any} data payload to send
      * @return {void}
-     *
-     * @template T
      */
     nativeSend(data) {
         if (this.isMaster) {
@@ -156,12 +158,12 @@ class IPC extends SafeEmitter {
 
     /**
      * @method send
+     * @desc Send a message to distant process
      * @memberof IPC#
      * @param {!String} subject subject name
-     * @param {*} message message
-     * @returns {Promise<T>}
+     * @param {Stream | any} message message
+     * @returns {Promise<any>}
      *
-     * @template T
      * @throws {TypeError}
      */
     async send(subject, message) {

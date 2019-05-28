@@ -14,7 +14,8 @@ const innerValue = Symbol("MaybeValue");
 class MaybeStream {
     /**
      * @constructor
-     * @param {any} value any
+     * @memberof MaybeStream#
+     * @param {any} value any javascript value
      */
     constructor(value) {
         Reflect.defineProperty(this, innerValue, {
@@ -26,10 +27,11 @@ class MaybeStream {
 
     /**
      * @async
-     * @generator
      * @method getValue
+     * @desc Get the transformed value (without Stream wrapper)
+     * @memberof MaybeStream#
      * @param {Object} options options
-     * @param {Boolean} [options.decode] decode stream
+     * @param {Boolean} [options.decode=true] decode stream
      * @returns {Promise<any>}
      */
     async getValue({ decode = true } = Object.create(null)) {

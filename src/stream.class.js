@@ -3,10 +3,15 @@ const { Transform } = require("stream");
 
 /**
  * @class Stream
+ * @classdesc Implement custom Transform Stream for our ipc mechanism
+ * @extends Transform
+ *
+ * @property {NodeJS.Timer} timeOut
  */
 class Stream extends Transform {
     /**
      * @constructor
+     * @memberof Stream#
      */
     constructor() {
         super();
