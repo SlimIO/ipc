@@ -89,5 +89,12 @@ SlimIO IPC bring support for stream communication.
 ## Roadmap
 - Implement Node.js workers!
 
+## Dependencies
+
+|Name|Refactoring|Security Risk|Usage|
+|---|---|---|---|
+|[@slimio/is](https://github.com/SlimIO/is#readme)|Minor|Low|Type Check|
+|[@slimio/safe-emitter](https://github.com/SlimIO/safeEmitter#readme)|Minor|Medium|Safe Node.js Emitter (error isolation)|
+
 ## License
 MIT
