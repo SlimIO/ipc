@@ -6,6 +6,13 @@ slave.on("prime", (data, next) => {
     next(data * 4);
 });
 
+slave.on("noPrototype", (name, next) => {
+    const ret = Object.create(null);
+
+    ret[name] = "foo";
+    next(ret);
+});
+
 slave.on("sayHello", (name, next) => {
     const wS = new IPC.Stream();
 

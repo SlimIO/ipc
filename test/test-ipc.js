@@ -57,6 +57,11 @@ avaTest("Create communication channel with child.js", async(assert) => {
     const ret = await master.send("prime", 5);
     assert.is(ret, 20);
 
+    const noProtoRet = await master.send("noPrototype", "boby");
+    const deepValue = Object.create(null);
+    deepValue.boby = "foo";
+    assert.deepEqual(noProtoRet, deepValue);
+
     const wS = await master.send("sayHello", "fraxken");
     const value = await (new MaybeStream(wS)).getValue();
     assert.is(value, "hello fraxken !");

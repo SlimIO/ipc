@@ -205,5 +205,6 @@ IPC.Types = Object.freeze({
     Master: 0,
     Slave: 1
 });
+Object.preventExtensions(IPC);
 
 module.exports = IPC;
