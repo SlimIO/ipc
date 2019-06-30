@@ -3,6 +3,7 @@ const { randomBytes } = require("crypto");
 
 // Require Third-party Dependencies
 const SafeEmitter = require("@slimio/safe-emitter");
+const uuid = require("uuid/v4");
 
 // Require Internal Dependencies
 const MaybeStream = require("./maybe.class");
@@ -172,7 +173,7 @@ class IPC extends SafeEmitter {
         }
 
         let timeOutMS = MESSAGE_TIMEOUT_MS;
-        const id = randomBytes(16).toString();
+        const id = uuid();
         if (message instanceof Stream) {
             if (message.timeOut !== null) {
                 timeOutMS = message.timeOut;

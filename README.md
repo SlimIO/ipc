@@ -95,6 +95,7 @@ SlimIO IPC bring support for stream communication.
 |---|---|---|---|
 |[@slimio/is](https://github.com/SlimIO/is#readme)|Minor|Low|Type Check|
 |[@slimio/safe-emitter](https://github.com/SlimIO/safeEmitter#readme)|Minor|Medium|Safe Node.js Emitter (error isolation)|
+|[uuid](https://github.com/kelektiv/node-uuid#readme)|Minor|Low|Unique ID|
 
 ## License
 MIT
