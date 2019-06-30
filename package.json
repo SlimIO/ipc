@@ -1,6 +1,6 @@
 {
     "name": "@slimio/ipc",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "Node.js Inter Process Communication",
     "main": "index.js",
     "scripts": {
