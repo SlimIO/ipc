@@ -1,16 +1,18 @@
+"use strict";
+
 // Require Node.js Dependencies
 const { Transform } = require("stream");
 
 /**
  * @class Stream
  * @classdesc Implement custom Transform Stream for our ipc mechanism
- * @extends Transform
+ * @augments Transform
  *
  * @property {NodeJS.Timer} timeOut
  */
 class Stream extends Transform {
     /**
-     * @constructor
+     * @class
      * @memberof Stream#
      */
     constructor() {
@@ -24,11 +26,11 @@ class Stream extends Transform {
     }
 
     /**
-     * @method _write
+     * @function _write
      * @param {!Buffer} chunk buffer chunk!
      * @param {*} enc encoding
      * @param {*} next next
-     * @return {void}
+     * @returns {void}
      */
     _write(chunk, enc, next) {
         this.push(chunk);

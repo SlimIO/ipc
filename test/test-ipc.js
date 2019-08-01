@@ -1,3 +1,5 @@
+"use strict";
+
 // Require Node.js Dependencies
 const { fork } = require("child_process");
 const { join } = require("path");

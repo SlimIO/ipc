@@ -1,3 +1,5 @@
+"use strict";
+
 // Require Node.js Dependencies
 const { Transform } = require("stream");
 

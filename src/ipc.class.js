@@ -1,3 +1,5 @@
+"use strict";
+
 // Require Node.js Dependencies
 const { randomBytes } = require("crypto");
 
@@ -17,15 +19,15 @@ const MESSAGE_TIMEOUT_MS = 1000;
 
 /**
  * @class IPC
- * @extends SafeEmitter
+ * @augments SafeEmitter
  *
- * @property {Boolean} isMaster
- * @property {Map<String, IPC.Stream>} mem
+ * @property {boolean} isMaster
+ * @property {Map<string, IPC.Stream>} mem
  * @property {SafeEmitter} response
  */
 class IPC extends SafeEmitter {
     /**
-     * @constructor
+     * @class
      * @memberof IPC#
      * @param {ChildProcess} [cp] child processes
      *
@@ -37,7 +39,7 @@ class IPC extends SafeEmitter {
         /* istanbul ignore next */
         this.catch((error) => console.error(error));
         this.response = new SafeEmitter();
-        /** @type {Map<String, IPC.Stream>} */
+        /** @type {Map<string, IPC.Stream>} */
         this.mem = new Map();
 
         if (typeof cp === "undefined") {
@@ -60,9 +62,10 @@ class IPC extends SafeEmitter {
     }
 
     /**
-     * @property {Boolean} isMaster
-     * @desc Known if the current process is the master or the slave
+     * @property {boolean} isMaster
+     * @description Known if the current process is the master or the slave
      * @memberof IPC#
+     * @returns {!boolean}
      */
     get isMaster() {
         return this[IPC_TYPE] === IPC.Types.Master;
@@ -70,10 +73,10 @@ class IPC extends SafeEmitter {
 
     /**
      * @private
-     * @method _responseHandler
+     * @function _responseHandler
      * @memberof IPC#
-     * @param {String} id id
-     * @param {String} message message
+     * @param {string} id id
+     * @param {string} message message
      * @returns {Promise<void>}
      */
     async _responseHandler(id, message) {
@@ -92,7 +95,7 @@ class IPC extends SafeEmitter {
 
     /**
      * @private
-     * @method _messageHandler
+     * @function _messageHandler
      * @memberof IPC#
      * @param {any} data data
      * @returns {void}
@@ -143,10 +146,10 @@ class IPC extends SafeEmitter {
     }
 
     /**
-     * @method nativeSend
+     * @function nativeSend
      * @memberof IPC#
      * @param {any} data payload to send
-     * @return {void}
+     * @returns {void}
      */
     nativeSend(data) {
         if (this.isMaster) {
@@ -158,10 +161,10 @@ class IPC extends SafeEmitter {
     }
 
     /**
-     * @method send
-     * @desc Send a message to distant process
+     * @function send
+     * @description Send a message to distant process
      * @memberof IPC#
-     * @param {!String} subject subject name
+     * @param {!string} subject subject name
      * @param {Stream | any} message message
      * @returns {Promise<any>}
      *

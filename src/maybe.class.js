@@ -1,3 +1,5 @@
+"use strict";
+
 // Require Internal Dependencies
 const Stream = require("./stream.class");
 
@@ -13,7 +15,7 @@ const innerValue = Symbol("MaybeValue");
  */
 class MaybeStream {
     /**
-     * @constructor
+     * @class
      * @memberof MaybeStream#
      * @param {any} value any javascript value
      */
@@ -27,11 +29,11 @@ class MaybeStream {
 
     /**
      * @async
-     * @method getValue
-     * @desc Get the transformed value (without Stream wrapper)
+     * @function getValue
+     * @description Get the transformed value (without Stream wrapper)
      * @memberof MaybeStream#
-     * @param {Object} options options
-     * @param {Boolean} [options.decode=true] decode stream
+     * @param {object} options options
+     * @param {boolean} [options.decode=true] decode stream
      * @returns {Promise<any>}
      */
     async getValue({ decode = true } = Object.create(null)) {

@@ -1,3 +1,5 @@
+"use strict";
+
 const IPC = require("../");
 
 const slave = new IPC();
