@@ -21,6 +21,11 @@
         "communication",
         "wrapper"
     ],
+    "files": [
+        "index.js",
+        "index.d.ts",
+        "src/*.js"
+    ],
     "author": "SlimIO",
     "license": "MIT",
     "bugs": {
