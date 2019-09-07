@@ -6,6 +6,7 @@
 ![dep](https://img.shields.io/david/SlimIO/ipc)
 ![size](https://img.shields.io/bundlephobia/min/@slimio/ipc)
 [![Known Vulnerabilities](https://snyk.io//test/github/SlimIO/ipc/badge.svg?targetFile=package.json)](https://snyk.io//test/github/SlimIO/ipc?targetFile=package.json)
+[![Build Status](https://travis-ci.com/SlimIO/ipc.svg?branch=master)](https://travis-ci.com/SlimIO/ipc)
 
 Node.js end-to-end IPC (Inter Process Communication). The goal of this package is to reduce the code required to implement an interaction between two Node.js process.
 
