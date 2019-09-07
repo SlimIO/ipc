@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "prepublishOnly": "pkg-ok",
-        "test": "cross-env psp && ava --verbose test/test-*.js",
+        "test": "cross-env psp && ava --verbose",
         "doc": "jsdoc -c ./jsdoc.json -r -R ./README.md -P ./package.json --verbose",
         "coverage": "nyc npm test",
         "report": "nyc report --reporter=html"
@@ -26,6 +26,12 @@
         "index.d.ts",
         "src/*.js"
     ],
+    "ava": {
+        "files": [
+            "test/*.js",
+            "!test/child.js"
+        ]
+    },
     "author": "SlimIO",
     "license": "MIT",
     "bugs": {
