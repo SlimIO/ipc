@@ -40,7 +40,7 @@
     "homepage": "https://github.com/SlimIO/ipc#readme",
     "dependencies": {
         "@slimio/is": "^1.5.1",
-        "@slimio/safe-emitter": "^1.0.6",
+        "@slimio/safe-emitter": "^1.1.0",
         "uuid": "^3.3.2"
     },
     "devDependencies": {
