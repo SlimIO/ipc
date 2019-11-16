@@ -16,7 +16,7 @@ Node.js end-to-end IPC (Inter Process Communication). The goal of this package i
 - Support streaming communication in both-end
 
 ## Requirements
-- [Node.js](https://nodejs.org/en/) v10 or higher
+- [Node.js](https://nodejs.org/en/) v12 or higher
 
 ## Getting Started
 
