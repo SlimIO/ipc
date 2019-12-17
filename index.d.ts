@@ -19,6 +19,7 @@ declare class IPC<T> extends SafeEmitter<T> {
     public static readonly Types: IPC.Types;
     public static Stream: typeof Stream;
     public static MaybeStream: typeof MaybeStream;
+    public static MESSAGE_TIMEOUT_MS: number;
 
     nativeSend(data?: any): void;
     send<K extends keyof T>(subject: K, data?: T[K]): Promise<any>;

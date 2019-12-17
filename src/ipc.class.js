@@ -14,9 +14,6 @@ const Stream = require("./stream.class");
 // SYMBOLS
 const IPC_TYPE = Symbol("TYPE");
 
-// CONSTANTS
-const MESSAGE_TIMEOUT_MS = 1000;
-
 /**
  * @class IPC
  * @augments SafeEmitter
@@ -175,7 +172,7 @@ class IPC extends SafeEmitter {
             throw new TypeError("subject must be a string");
         }
 
-        let timeOutMS = MESSAGE_TIMEOUT_MS;
+        let timeOutMS = IPC.MESSAGE_TIMEOUT_MS;
         const id = uuid();
         if (message instanceof Stream) {
             if (message.timeOut !== null) {
@@ -202,6 +199,7 @@ class IPC extends SafeEmitter {
     }
 }
 
+IPC.MESSAGE_TIMEOUT_MS = 1000;
 IPC.Stream = Stream;
 IPC.MaybeStream = MaybeStream;
 IPC.Types = Object.freeze({
