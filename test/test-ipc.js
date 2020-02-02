@@ -32,7 +32,7 @@ avaTest("Check static IPC properties", (assert) => {
 avaTest("IPC - CP must be an instanceof ChildProcess", (assert) => {
     const err = assert.throws(() => {
         new IPC(10);
-    }, Error);
+    }, { instanceOf: Error });
     assert.is(err.message, "cp must be instanceof ChildProcess");
 });
 
