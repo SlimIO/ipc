@@ -41,7 +41,7 @@
     "dependencies": {
         "@slimio/is": "^1.5.1",
         "@slimio/safe-emitter": "^1.1.0",
-        "uuid": "^3.3.2"
+        "uuid": "^7.0.0"
     },
     "devDependencies": {
         "@commitlint/cli": "^8.2.0",
