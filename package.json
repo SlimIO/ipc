@@ -1,78 +1,82 @@
 {
-    "name": "@slimio/ipc",
-    "version": "0.2.1",
-    "description": "Node.js Inter Process Communication",
-    "main": "index.js",
-    "scripts": {
-        "prepublishOnly": "pkg-ok",
-        "test": "cross-env psp && ava --verbose",
-        "doc": "jsdoc -c ./jsdoc.json -r -R ./README.md -P ./package.json --verbose",
-        "coverage": "nyc npm test",
-        "report": "nyc report --reporter=html"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/SlimIO/ipc.git"
-    },
-    "keywords": [
-        "SlimIO",
-        "ipc",
-        "process",
-        "communication",
-        "wrapper"
-    ],
+  "name": "@slimio/ipc",
+  "version": "0.2.1",
+  "description": "Node.js Inter Process Communication",
+  "main": "index.js",
+  "scripts": {
+    "prepublishOnly": "pkg-ok",
+    "test": "cross-env psp && ava --verbose",
+    "doc": "jsdoc -c ./jsdoc.json -r -R ./README.md -P ./package.json --verbose",
+    "coverage": "nyc npm test",
+    "report": "nyc report --reporter=html",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SlimIO/ipc.git"
+  },
+  "keywords": [
+    "SlimIO",
+    "ipc",
+    "process",
+    "communication",
+    "wrapper"
+  ],
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "src/*.js"
+  ],
+  "ava": {
     "files": [
-        "index.js",
-        "index.d.ts",
-        "src/*.js"
-    ],
-    "ava": {
-        "files": [
-            "test/*.js",
-            "!test/child.js"
-        ]
-    },
-    "author": "SlimIO",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/SlimIO/ipc/issues"
-    },
-    "homepage": "https://github.com/SlimIO/ipc#readme",
-    "dependencies": {
-        "@slimio/is": "^1.5.1",
-        "@slimio/safe-emitter": "^1.1.0",
-        "uuid": "^3.3.2"
-    },
-    "devDependencies": {
-        "@commitlint/cli": "^8.2.0",
-        "@commitlint/config-conventional": "^8.2.0",
-        "@escommunity/minami": "^1.0.0",
-        "@slimio/eslint-config": "^4.0.0",
-        "@slimio/psp": "^0.11.0",
-        "@types/node": "^13.7.0",
-        "ava": "^3.2.0",
-        "cross-env": "^7.0.0",
-        "eslint": "^6.6.0",
-        "husky": "^4.2.1",
-        "jsdoc": "^3.6.2",
-        "nyc": "^15.0.0",
-        "pkg-ok": "^2.3.1"
-    },
-    "engines": {
-        "node": ">=12"
-    },
-    "husky": {
-        "hooks": {
-            "pre-push": "cross-env eslint src/** && npm test",
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-        }
-    },
-    "nyc": {
-        "check-coverage": true,
-        "per-file": false,
-        "lines": 90,
-        "statements": 90,
-        "functions": 90,
-        "branches": 90
+      "test/*.js",
+      "!test/child.js"
+    ]
+  },
+  "author": "SlimIO",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SlimIO/ipc/issues"
+  },
+  "homepage": "https://github.com/SlimIO/ipc#readme",
+  "dependencies": {
+    "@slimio/is": "^1.5.1",
+    "@slimio/safe-emitter": "^1.1.0",
+    "uuid": "^3.3.2",
+    "snyk": "^1.316.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@escommunity/minami": "^1.0.0",
+    "@slimio/eslint-config": "^4.0.0",
+    "@slimio/psp": "^0.11.0",
+    "@types/node": "^13.7.0",
+    "ava": "^3.2.0",
+    "cross-env": "^7.0.0",
+    "eslint": "^6.6.0",
+    "husky": "^4.2.1",
+    "jsdoc": "^3.6.2",
+    "nyc": "^15.0.0",
+    "pkg-ok": "^2.3.1"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "cross-env eslint src/** && npm test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "nyc": {
+    "check-coverage": true,
+    "per-file": false,
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90
+  },
+  "snyk": true
 }
