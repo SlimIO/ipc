@@ -1,11 +1,8 @@
 "use strict";
 
-// Require Node.js Dependencies
-const { randomBytes } = require("crypto");
-
 // Require Third-party Dependencies
 const SafeEmitter = require("@slimio/safe-emitter");
-const uuid = require("uuid/v4");
+const uuid = require("@lukeed/uuid");
 
 // Require Internal Dependencies
 const MaybeStream = require("./maybe.class");

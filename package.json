@@ -39,9 +39,9 @@
     },
     "homepage": "https://github.com/SlimIO/ipc#readme",
     "dependencies": {
+        "@lukeed/uuid": "^1.0.1",
         "@slimio/is": "^1.5.1",
-        "@slimio/safe-emitter": "^1.1.0",
-        "uuid": "^3.3.2"
+        "@slimio/safe-emitter": "^1.1.0"
     },
     "devDependencies": {
         "@commitlint/cli": "^8.2.0",
